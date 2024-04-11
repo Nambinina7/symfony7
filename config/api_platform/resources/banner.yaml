@@ -1,0 +1,6 @@
+App\Entity\Banner:
+  operations:
+    ApiPlatform\Metadata\GetCollection:
+
+  normalizationContext:
+    groups: [ 'banner:read' ]

@@ -7,6 +7,9 @@
 /public/bundles/
 /var/
 /vendor/
+/.idea
+/.svn
+/migrations/
 ###< symfony/framework-bundle ###
 
 ###> phpunit/phpunit ###
@@ -23,3 +26,8 @@
 /public/assets/
 /assets/vendor/
 ###< symfony/asset-mapper ###
+
+###> liip/imagine-bundle ###
+/public/media/cache/
+/public/banners/images/*
+###< liip/imagine-bundle ###
