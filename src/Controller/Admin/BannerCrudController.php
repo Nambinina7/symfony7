@@ -42,7 +42,7 @@ class BannerCrudController extends AbstractCrudController
             NumberField::new('duration'),
             IntegerField::new('orderNumber'),
             ImageField::new('image')
-                ->setBasePath('/banners/images')
+                ->setBasePath(Banner::PATH_WEB)
                 ->onlyOnIndex(),
         ];
 
@@ -53,7 +53,7 @@ class BannerCrudController extends AbstractCrudController
             $fields[] = TextField::new('imageFile')
                 ->setFormType(VichImageType::class)->onlyWhenUpdating();
             $fields[] = ImageField::new('image')
-                ->setBasePath('/banner/images')
+                ->setBasePath(Banner::PATH_WEB)
                 ->onlyOnDetail();
         }
 

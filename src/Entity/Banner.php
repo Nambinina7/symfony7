@@ -14,6 +14,9 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 class Banner
 {
+    const PATH_MOBILE = "/banners/images/mobile/";
+    const PATH_WEB = "/banners/images/web/";
+    const ROUTE_MOBILE = "get_banners_mobile";
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -22,10 +25,14 @@ class Banner
 
     #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['banner:read'])]
-    private ?string $image = null;
+    public ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'banner', fileNameProperty: 'image')]
     private ?File $imageFile = null;
+
+
+    #[Groups(['banner:read'])]
+    public ?string $path = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['banner:read'])]
@@ -155,5 +162,17 @@ class Banner
         $this->description = $description;
 
         return $this;
+    }
+
+    #[ORM\PreRemove]
+    public function removeImageFile(): void
+    {
+        if ($this->image) {
+            $filePathWeb = sprintf('%s/../../public/%s%s', __DIR__, Banner::PATH_WEB, $this->image);
+
+            if (file_exists($filePathWeb)) {
+                unlink($filePathWeb);
+            }
+        }
     }
 }

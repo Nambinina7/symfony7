@@ -1,6 +1,14 @@
 App\Entity\Banner:
   operations:
-    ApiPlatform\Metadata\GetCollection:
+    get_banners_web:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+      uriTemplate: /banners/web
+
+    get_banners_mobile:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+      uriTemplate: /banners/mobile
 
   normalizationContext:
     groups: [ 'banner:read' ]

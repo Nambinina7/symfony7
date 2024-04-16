@@ -3,6 +3,6 @@ vich_uploader:
 
     mappings:
         banner:
-            uri_prefix: banner_images
-            upload_destination: '%kernel.project_dir%/public/banners/images'
+            uri_prefix: '%banner_image_dir_prefix%'
+            upload_destination: '%banner_image_dir%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
