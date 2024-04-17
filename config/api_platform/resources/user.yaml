@@ -1,0 +1,10 @@
+App\Entity\User:
+  operations:
+    get_user:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+      uriTemplate: /users
+
+
+  normalizationContext:
+    groups: [ 'user:read' ]

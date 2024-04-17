@@ -2,8 +2,8 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EntityTimestampTrait;
 use App\Repository\BannerRepository;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
@@ -14,6 +14,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 class Banner
 {
+    use EntityTimestampTrait;
     const PATH_MOBILE = "/banners/images/mobile/";
     const PATH_WEB = "/banners/images/web/";
     const ROUTE_MOBILE = "get_banners_mobile";
@@ -33,14 +34,6 @@ class Banner
 
     #[Groups(['banner:read'])]
     public ?string $path = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['banner:read'])]
-    private ?\DateTime $createdAt = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['banner:read'])]
-    private ?\DateTime $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
     #[Groups(['banner:read'])]
@@ -91,29 +84,6 @@ class Banner
     public function getImageFile(): ?File
     {
         return $this->imageFile;
-    }
-
-    #[ORM\PrePersist]
-    public function setCreateAt(): void
-    {
-        $this->createdAt = new \DateTime();
-    }
-
-    #[ORM\PrePersist]
-    #[ORM\PreUpdate]
-    public function setUpdatedAt(): void
-    {
-        $this->updatedAt = new \DateTime();
-    }
-
-    public function getCreatedAt(): DateTimeInterface
-    {
-        return $this->createdAt;
-    }
-
-    public function getUpdatedAt(): DateTimeInterface
-    {
-        return $this->updatedAt;
     }
 
     public function getOrderNumber(): ?int

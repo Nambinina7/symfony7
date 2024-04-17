@@ -1,6 +1,9 @@
 parameters:
   public_dir: '%kernel.project_dir%/public'
   banner_image_dir: '%public_dir%/%banner_image_dir_prefix%'
+  user_image_dir: '%public_dir%/%user_image_dir_prefix%'
 
   image_dir_prefix: '/banners/images'
+  user_dir_prefix: '/user/images'
   banner_image_dir_prefix: '%image_dir_prefix%/web'
+  user_image_dir_prefix: '%user_dir_prefix%'
