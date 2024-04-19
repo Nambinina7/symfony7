@@ -4,56 +4,59 @@ namespace App\Entity;
 
 use App\Entity\Traits\EntityTimestampTrait;
 use App\Repository\BannerRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: BannerRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-#[Vich\Uploadable]
 class Banner
 {
     use EntityTimestampTrait;
-    const PATH_MOBILE = "/banners/images/mobile/";
-    const PATH_WEB = "/banners/images/web/";
     const ROUTE_MOBILE = "get_banners_mobile";
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     #[Groups(['banner:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['banner:read'])]
-    public ?string $image = null;
-
-    #[Vich\UploadableField(mapping: 'banner', fileNameProperty: 'image')]
-    private ?File $imageFile = null;
-
-
-    #[Groups(['banner:read'])]
-    public ?string $path = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['banner:read'])]
-    private ?int $orderNumber = null;
-
-    #[ORM\Column(nullable: true)]
-    #[Groups(['banner:read'])]
-    private ?float $duration = null;
+    private ?bool $autoPlay = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['banner:read'])]
-    private ?string $title = null;
+    private ?string $animation = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
+    #[ORM\Column]
     #[Groups(['banner:read'])]
-    private ?string $description = null;
+    private ?bool $indicators = null;
+
+    #[ORM\Column]
+    #[Groups(['banner:read'])]
+    private ?int $timeout = null;
+
+    #[ORM\Column]
+    #[Groups(['banner:read'])]
+    private ?bool $navButtonsAlwaysVisible = null;
+
+    #[ORM\Column]
+    #[Groups(['banner:read'])]
+    private ?bool $cycleNavigation = null;
+
+    #[ORM\Column]
+    #[Groups(['banner_items:read'])]
+    private ?int $indexBanner = null;
+
+    #[ORM\OneToMany(targetEntity: BannerItems::class, mappedBy: 'banner')]
+    #[Groups(['banner:read'])]
+    private Collection $bannerItems;
 
     public function __construct()
     {
-        $this->duration = 10;
+        $this->bannerItems = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -61,88 +64,122 @@ class Banner
         return $this->id;
     }
 
-    public function getImage(): ?string
+    public function isAutoPlay(): ?bool
     {
-        return $this->image;
+        return $this->autoPlay;
     }
 
-    public function setImage(?string $image): void
+    public function setAutoPlay(bool $autoPlay): static
     {
-        $this->image = $image;
+        $this->autoPlay = $autoPlay;
+
+        return $this;
     }
 
-
-    public function setImageFile(File $imageFile = null): void
+    public function getAnimation(): ?string
     {
-        $this->imageFile = $imageFile;
+        return $this->animation;
+    }
 
-        if (null !== $imageFile) {
-            $this->updatedAt = new \DateTime();
+    public function setAnimation(string $animation): static
+    {
+        $this->animation = $animation;
+
+        return $this;
+    }
+
+    public function isIndicators(): ?bool
+    {
+        return $this->indicators;
+    }
+
+    public function setIndicators(bool $indicators): static
+    {
+        $this->indicators = $indicators;
+
+        return $this;
+    }
+
+    public function getTimeout(): ?int
+    {
+        return $this->timeout;
+    }
+
+    public function setTimeout(int $timeout): static
+    {
+        $this->timeout = $timeout;
+
+        return $this;
+    }
+
+    public function isNavButtonsAlwaysVisible(): ?bool
+    {
+        return $this->navButtonsAlwaysVisible;
+    }
+
+    public function setNavButtonsAlwaysVisible(bool $navButtonsAlwaysVisible): static
+    {
+        $this->navButtonsAlwaysVisible = $navButtonsAlwaysVisible;
+
+        return $this;
+    }
+
+    public function isCycleNavigation(): ?bool
+    {
+        return $this->cycleNavigation;
+    }
+
+    public function setCycleNavigation(bool $cycleNavigation): static
+    {
+        $this->cycleNavigation = $cycleNavigation;
+
+        return $this;
+    }
+
+    public function getIndexBanner(): ?int
+    {
+        return $this->indexBanner;
+    }
+
+    public function setIndexBanner(int $indexBanner): static
+    {
+        $this->indexBanner = $indexBanner;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, BannerItems>
+     */
+    public function getBannerItems(): Collection
+    {
+        return $this->bannerItems;
+    }
+
+    public function addBannerItem(BannerItems $bannerItem): static
+    {
+        if (!$this->bannerItems->contains($bannerItem)) {
+            $this->bannerItems->add($bannerItem);
+            $bannerItem->setBanner($this);
         }
-    }
-
-    public function getImageFile(): ?File
-    {
-        return $this->imageFile;
-    }
-
-    public function getOrderNumber(): ?int
-    {
-        return $this->orderNumber;
-    }
-
-    public function setOrderNumber(?int $orderNumber): static
-    {
-        $this->orderNumber = $orderNumber;
 
         return $this;
     }
 
-    public function getDuration(): ?float
+    public function removeBannerItem(BannerItems $bannerItem): static
     {
-        return $this->duration;
-    }
-
-    public function setDuration(?float $duration): static
-    {
-        $this->duration = $duration;
-
-        return $this;
-    }
-
-    public function getTitle(): ?string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): static
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(?string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    #[ORM\PreRemove]
-    public function removeImageFile(): void
-    {
-        if ($this->image) {
-            $filePathWeb = sprintf('%s/../../public/%s%s', __DIR__, Banner::PATH_WEB, $this->image);
-
-            if (file_exists($filePathWeb)) {
-                unlink($filePathWeb);
+        if ($this->bannerItems->removeElement($bannerItem)) {
+            // set the owning side to null (unless already changed)
+            if ($bannerItem->getBanner() === $this) {
+                $bannerItem->setBanner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->animation;
     }
 }

@@ -2,7 +2,7 @@ vich_uploader:
     db_driver: orm
 
     mappings:
-        banner:
+        banner_items:
             uri_prefix: '%banner_image_dir_prefix%'
             upload_destination: '%banner_image_dir%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
