@@ -2,8 +2,11 @@ parameters:
   public_dir: '%kernel.project_dir%/public'
   banner_image_dir: '%public_dir%/%banner_image_dir_prefix%'
   user_image_dir: '%public_dir%/%user_image_dir_prefix%'
+  technology_image_dir: '%public_dir%/%technology_image_dir_prefix%'
 
   image_dir_prefix: '/banners/images'
   user_dir_prefix: '/user/images'
+  technology_dir_prefix: '/technology/images'
   banner_image_dir_prefix: '%image_dir_prefix%/web'
   user_image_dir_prefix: '%user_dir_prefix%'
+  technology_image_dir_prefix: '%technology_dir_prefix%'

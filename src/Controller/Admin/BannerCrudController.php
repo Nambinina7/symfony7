@@ -21,7 +21,7 @@ class BannerCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPaginatorPageSize(4)
+            ->setPaginatorPageSize(10)
             ->setEntityLabelInSingular('Banner')
             ->setEntityLabelInPlural('Banners');
     }

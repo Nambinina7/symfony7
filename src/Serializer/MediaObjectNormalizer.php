@@ -4,6 +4,7 @@ namespace App\Serializer;
 
 use App\Entity\Banner;
 use App\Entity\BannerItems;
+use App\Entity\Technology;
 use App\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -27,9 +28,14 @@ class MediaObjectNormalizer implements NormalizerInterface
         $request = $this->requestStack->getCurrentRequest();
 
         if ($object instanceof User) {
-            $prefixUser =  User::PATH_USER;
+            $prefixUser = User::PATH_USER;
             $object->path = $prefixUser . $object->image;
-        }else {
+        } else if ($object instanceof Technology)
+        {
+            $prefixTechnology = Technology::PATH_TECHNOLOGY;
+            $object->path = $prefixTechnology . $object->image;
+        }else
+        {
             $isMobileRequest = $request && $request->attributes->get('_route') === Banner::ROUTE_MOBILE;
             $prefix = $isMobileRequest ? BannerItems::PATH_MOBILE : BannerItems::PATH_WEB;
             foreach($object->getBannerItems() as $bannerItem) {
@@ -47,7 +53,7 @@ class MediaObjectNormalizer implements NormalizerInterface
             return false;
         }
 
-        return $data instanceof Banner || $data instanceof User;
+        return $data instanceof Banner || $data instanceof User || $data instanceof Technology;
     }
 
     public function getSupportedTypes(?string $format): array
@@ -55,6 +61,7 @@ class MediaObjectNormalizer implements NormalizerInterface
         return [
             Banner::class => true,
             User::class => true,
+            Technology::class => true,
         ];
     }
 }

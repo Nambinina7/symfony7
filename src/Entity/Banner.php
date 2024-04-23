@@ -47,7 +47,7 @@ class Banner
     private ?bool $cycleNavigation = null;
 
     #[ORM\Column]
-    #[Groups(['banner_items:read'])]
+    #[Groups(['banner:read'])]
     private ?int $indexBanner = null;
 
     #[ORM\OneToMany(targetEntity: BannerItems::class, mappedBy: 'banner')]

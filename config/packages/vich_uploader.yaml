@@ -10,3 +10,8 @@ vich_uploader:
             uri_prefix: '%user_image_dir_prefix%'
             upload_destination: '%user_image_dir%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        technology_logo:
+            uri_prefix: '%technology_image_dir_prefix%'
+            upload_destination: '%technology_image_dir%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+

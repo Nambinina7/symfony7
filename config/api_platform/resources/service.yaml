@@ -1,0 +1,9 @@
+App\Entity\Service:
+  operations:
+    get_service:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+
+
+  normalizationContext:
+    groups: [ 'service:read' ]
