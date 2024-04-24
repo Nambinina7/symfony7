@@ -7,7 +7,7 @@ use Liip\ImagineBundle\Imagine\Cache\CacheManager;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\File\File;
 
-class BannerListener
+class BannerItemsListener
 {
     private CacheManager $cacheManager;
     private string $mobileDir;

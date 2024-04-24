@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Banner;
+use App\Entity\BannerItems;
+use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -16,7 +18,7 @@ class DashboardController extends AbstractDashboardController
     public function index(): Response
     {
          $adminUrlGenerator = $this->container->get(AdminUrlGenerator::class);
-         return $this->redirect($adminUrlGenerator->setController(BannerCrudController::class)->generateUrl());
+         return $this->redirect($adminUrlGenerator->setController(BannerItemsCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -28,6 +30,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Banners', 'fas fa-list', Banner::class);
+        yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('BannerItems', 'fas fa-list', BannerItems::class);
+        yield MenuItem::linkToCrud('Banner', 'fas fa-list', Banner::class);
     }
 }

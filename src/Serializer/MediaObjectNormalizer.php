@@ -3,6 +3,8 @@
 namespace App\Serializer;
 
 use App\Entity\Banner;
+use App\Entity\BannerItems;
+use App\Entity\User;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
@@ -22,11 +24,18 @@ class MediaObjectNormalizer implements NormalizerInterface
     public function normalize($object, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null
     {
         $context[self::ALREADY_CALLED] = true;
-
         $request = $this->requestStack->getCurrentRequest();
-        $isMobileRequest = $request && $request->attributes->get('_route') === Banner::ROUTE_MOBILE;
-        $prefix = $isMobileRequest ? Banner::PATH_MOBILE : Banner::PATH_WEB;
-        $object->path = $prefix . $object->image;;
+
+        if ($object instanceof User) {
+            $prefixUser =  User::PATH_USER;
+            $object->path = $prefixUser . $object->image;
+        }else {
+            $isMobileRequest = $request && $request->attributes->get('_route') === Banner::ROUTE_MOBILE;
+            $prefix = $isMobileRequest ? BannerItems::PATH_MOBILE : BannerItems::PATH_WEB;
+            foreach($object->getBannerItems() as $bannerItem) {
+                $bannerItem->path = $prefix . $bannerItem->image;
+            }
+        }
 
         return $this->normalizer->normalize($object, $format, $context);
     }
@@ -38,13 +47,14 @@ class MediaObjectNormalizer implements NormalizerInterface
             return false;
         }
 
-        return $data instanceof Banner;
+        return $data instanceof Banner || $data instanceof User;
     }
 
     public function getSupportedTypes(?string $format): array
     {
         return [
             Banner::class => true,
+            User::class => true,
         ];
     }
 }

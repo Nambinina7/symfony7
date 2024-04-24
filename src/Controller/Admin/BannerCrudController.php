@@ -7,11 +7,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
-use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IntegerField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class BannerCrudController extends AbstractCrudController
 {
@@ -23,9 +21,9 @@ class BannerCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPaginatorPageSize(10)
+            ->setPaginatorPageSize(4)
             ->setEntityLabelInSingular('Banner')
-            ->setEntityLabelInPlural('banners');
+            ->setEntityLabelInPlural('Banners');
     }
 
     public function configureActions(Actions $actions): Actions
@@ -37,25 +35,14 @@ class BannerCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         $fields = [
-            TextField::new('title'),
-            TextField::new('description'),
-            NumberField::new('duration'),
-            IntegerField::new('orderNumber'),
-            ImageField::new('image')
-                ->setBasePath(Banner::PATH_WEB)
-                ->onlyOnIndex(),
+            BooleanField::new('autoPlay')->renderAsSwitch(true),
+            Field::new('animation'),
+            BooleanField::new('indicators')->renderAsSwitch(true),
+            IntegerField::new('timeout'),
+            BooleanField::new('navButtonsAlwaysVisible')->renderAsSwitch(true),
+            BooleanField::new('cycleNavigation')->renderAsSwitch(true),
+            IntegerField::new('indexBanner'),
         ];
-
-        if (Crud::PAGE_NEW === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyOnForms();
-        } elseif (Crud::PAGE_EDIT === $pageName || Crud::PAGE_DETAIL === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyWhenUpdating();
-            $fields[] = ImageField::new('image')
-                ->setBasePath(Banner::PATH_WEB)
-                ->onlyOnDetail();
-        }
 
         return $fields;
     }
