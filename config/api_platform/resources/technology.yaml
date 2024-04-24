@@ -1,0 +1,9 @@
+App\Entity\Technology:
+  operations:
+    get_technology:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+
+
+  normalizationContext:
+    groups: [ 'technology:read' ]

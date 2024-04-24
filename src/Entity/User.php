@@ -20,7 +20,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestampTrait;
-    const PATH_USER = "user/images/";
+    const PATH_USER = "/user/images/";
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

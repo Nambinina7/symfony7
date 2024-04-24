@@ -1,0 +1,9 @@
+App\Entity\Faq:
+  operations:
+    get_faq:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+
+
+  normalizationContext:
+    groups: [ 'faq:read' ]

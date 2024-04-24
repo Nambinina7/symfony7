@@ -10,12 +10,12 @@ use Symfony\Component\Serializer\Annotation\Groups;
 trait EntityTimestampTrait
 {
     #[ORM\Column(nullable: true)]
-    #[Groups(['banner_items:read', 'user:read'])]
+    #[Groups(['banner:read', 'user:read', 'technology:read', 'faq:read', 'service:read'])]
     private ?\DateTime $createdAt = null;
 
 
     #[ORM\Column(nullable: true)]
-    #[Groups(['banner_items:read', 'user:read'])]
+    #[Groups(['banner:read', 'user:read', 'technology:read', 'faq:read', 'service:read'])]
     private ?\DateTime $updatedAt = null;
 
     #[ORM\PrePersist]
