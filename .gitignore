@@ -33,3 +33,6 @@
 /public/media/cache/
 /public/banners/images/*
 ###< liip/imagine-bundle ###
+/.php-cs-fixer.cache
+/tools
+

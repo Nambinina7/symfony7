@@ -21,7 +21,7 @@ class BannerItemsListener
 
     public function onVichUploaderPostUpload(Event $event): void
     {
-//        $object = $event->getObject();
+        //        $object = $event->getObject();
         $mapping = $event->getMapping();
         $imagePath = $event->getObject()->getImage();
         $sourcePath = $mapping->getUploadDestination() . '/' . $imagePath;

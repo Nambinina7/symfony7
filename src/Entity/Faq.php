@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\HasLifecycleCallbacks]
 class Faq
 {
-
     use EntityTimestampTrait;
     #[ORM\Id]
     #[ORM\GeneratedValue]

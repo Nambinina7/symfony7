@@ -14,9 +14,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[Vich\Uploadable]
 class Technology
 {
-    const PATH_TECHNOLOGY = "/technology/images/";
-
     use EntityTimestampTrait;
+    public const PATH_TECHNOLOGY = "/technology/images/";
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

@@ -12,7 +12,6 @@ use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
 class MediaObjectNormalizer implements NormalizerInterface
 {
-
     private const ALREADY_CALLED = 'MEDIA_OBJECT_NORMALIZER_ALREADY_CALLED';
 
     public function __construct(
@@ -30,12 +29,10 @@ class MediaObjectNormalizer implements NormalizerInterface
         if ($object instanceof User) {
             $prefixUser = User::PATH_USER;
             $object->path = $prefixUser . $object->image;
-        } else if ($object instanceof Technology)
-        {
+        } elseif ($object instanceof Technology) {
             $prefixTechnology = Technology::PATH_TECHNOLOGY;
             $object->path = $prefixTechnology . $object->image;
-        }else
-        {
+        } else {
             $isMobileRequest = $request && $request->attributes->get('_route') === Banner::ROUTE_MOBILE;
             $prefix = $isMobileRequest ? BannerItems::PATH_MOBILE : BannerItems::PATH_WEB;
             foreach($object->getBannerItems() as $bannerItem) {
