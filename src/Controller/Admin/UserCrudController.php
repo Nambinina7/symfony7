@@ -29,7 +29,7 @@ class UserCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPaginatorPageSize(4)
+            ->setPaginatorPageSize(10)
             ->setEntityLabelInSingular('User')
             ->setEntityLabelInPlural('Users');
     }
@@ -42,13 +42,14 @@ class UserCrudController extends AbstractCrudController
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
             ->add(Crud::PAGE_INDEX, $password_user)->setPermission(Action::new('editpassword'), 'ROLE_USER')
-            ;
+        ;
     }
 
     public function configureFields(string $pageName): iterable
     {
         $fields = [
-            TextField::new('name'),
+            TextField::new('firstName')->formatValue(fn ($value, $entity) => ucwords($value)),
+            TextField::new('lastName')->formatValue(fn ($value, $entity) => ucwords($value)),
             TextField::new('position'),
             TextField::new('description'),
             TextField::new('email'),
@@ -91,4 +92,5 @@ class UserCrudController extends AbstractCrudController
         $entityManager->persist($entityInstance);
         $entityManager->flush();
     }
+
 }

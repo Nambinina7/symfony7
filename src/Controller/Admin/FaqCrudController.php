@@ -25,8 +25,8 @@ class FaqCrudController extends AbstractCrudController
     {
         return $crud
             ->setPaginatorPageSize(10)
-            ->setEntityLabelInSingular('Technologie')
-            ->setEntityLabelInPlural('Technologies');
+            ->setEntityLabelInSingular('Faq')
+            ->setEntityLabelInPlural('Faqs');
     }
 
     public function configureActions(Actions $actions): Actions

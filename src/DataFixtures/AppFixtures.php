@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
         for ($i = 0; $i < 3; $i++) {
             $banner = new BannerItems();
             $banner->setTitle("Title".$i);
-            $banner->setOrderNumber($i+1);
+            $banner->setOrderNumber($i + 1);
             $banner->setDescription("Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500");
             $banner->setImage($faker->imageUrl(width: 640, height: 450));
             $manager->persist($banner);

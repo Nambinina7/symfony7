@@ -15,8 +15,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 class BannerItems
 {
     use EntityTimestampTrait;
-    const PATH_MOBILE = "/banners/images/mobile/";
-    const PATH_WEB = "/banners/images/web/";
+    public const PATH_MOBILE = "/banners/images/mobile/";
+    public const PATH_WEB = "/banners/images/web/";
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

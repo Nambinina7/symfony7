@@ -13,14 +13,13 @@ use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
-
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestampTrait;
-    const PATH_USER = "/user/images/";
+    public const PATH_USER = "/user/images/";
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -56,15 +55,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['user:read'])]
-    private ?string $name = null;
-
-    #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
     private ?string $position = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     #[Groups(['user:read'])]
     private ?string $description = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:read'])]
+    private ?string $firstName = null;
+
+    #[ORM\Column(length: 255)]
+    #[Groups(['user:read'])]
+    private ?string $lastName = null;
 
     public function getId(): ?int
     {
@@ -141,18 +144,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): static
-    {
-        $this->name = $name;
-
-        return $this;
-    }
-
     public function getPosition(): ?string
     {
         return $this->position;
@@ -175,11 +166,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->description = $description;
 
         return $this;
-    }
-
-    public function __toString()
-    {
-        return $this->name;
     }
 
     public function getImage(): ?string
@@ -217,5 +203,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 unlink($filePathWeb);
             }
         }
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): static
+    {
+        $this->firstName = ucwords($firstName);
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): static
+    {
+        $this->lastName = ucwords($lastName);
+
+        return $this;
     }
 }

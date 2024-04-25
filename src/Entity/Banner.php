@@ -14,7 +14,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 class Banner
 {
     use EntityTimestampTrait;
-    const ROUTE_MOBILE = "get_banners_mobile";
+    public const ROUTE_MOBILE = "get_banners_mobile";
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
