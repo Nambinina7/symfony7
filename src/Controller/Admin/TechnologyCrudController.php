@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Technology;
+use App\Services\FieldService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -13,6 +14,9 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class TechnologyCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly FieldService $fieldService)
+    {
+    }
     public static function getEntityFqcn(): string
     {
         return Technology::class;
@@ -36,22 +40,9 @@ class TechnologyCrudController extends AbstractCrudController
     {
         $fields = [
             TextField::new('name'),
-            ImageField::new('image')
-                ->setBasePath(Technology::PATH_TECHNOLOGY)
-                ->onlyOnIndex(),
+            $this->fieldService->createImageField('image', Technology::PATH_TECHNOLOGY)
         ];
 
-        if (Crud::PAGE_NEW === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyOnForms();
-        } elseif (Crud::PAGE_EDIT === $pageName || Crud::PAGE_DETAIL === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyWhenUpdating();
-            $fields[] = ImageField::new('image')
-                ->setBasePath(Technology::PATH_TECHNOLOGY)
-                ->onlyOnDetail();
-        }
-
-        return $fields;
+        return $this->fieldService->configureFields($pageName, Technology::PATH_TECHNOLOGY, $fields);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Serializer;
 
+use App\Entity\About;
 use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Technology;
@@ -32,6 +33,10 @@ class MediaObjectNormalizer implements NormalizerInterface
         } elseif ($object instanceof Technology) {
             $prefixTechnology = Technology::PATH_TECHNOLOGY;
             $object->path = $prefixTechnology . $object->image;
+
+        } elseif ($object instanceof About) {
+            $prefixAbout = About::PATH_ABOUT;
+            $object->path = $prefixAbout . $object->image;
         } else {
             $isMobileRequest = $request && $request->attributes->get('_route') === Banner::ROUTE_MOBILE;
             $prefix = $isMobileRequest ? BannerItems::PATH_MOBILE : BannerItems::PATH_WEB;
@@ -50,7 +55,7 @@ class MediaObjectNormalizer implements NormalizerInterface
             return false;
         }
 
-        return $data instanceof Banner || $data instanceof User || $data instanceof Technology;
+        return $data instanceof Banner || $data instanceof User || $data instanceof Technology || $data instanceof About;
     }
 
     public function getSupportedTypes(?string $format): array
@@ -59,6 +64,7 @@ class MediaObjectNormalizer implements NormalizerInterface
             Banner::class => true,
             User::class => true,
             Technology::class => true,
+            About::class => true,
         ];
     }
 }

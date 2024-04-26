@@ -32,6 +32,7 @@
 ###> liip/imagine-bundle ###
 /public/media/cache/
 /public/banners/images/*
+public/about/
 ###< liip/imagine-bundle ###
 /.php-cs-fixer.cache
 /tools

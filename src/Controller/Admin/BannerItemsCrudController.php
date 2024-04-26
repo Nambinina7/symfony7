@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\BannerItems;
+use App\Services\FieldService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -16,6 +17,9 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 
 class BannerItemsCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly FieldService $fieldService)
+    {
+    }
     public static function getEntityFqcn(): string
     {
         return BannerItems::class;
@@ -44,22 +48,9 @@ class BannerItemsCrudController extends AbstractCrudController
             IntegerField::new('orderNumber'),
             AssociationField::new('banner', 'Banner')
                 ->setCrudController(BannerCrudController::class),
-            ImageField::new('image')
-                ->setBasePath(BannerItems::PATH_WEB)
-                ->onlyOnIndex(),
+            $this->fieldService->createImageField('image', BannerItems::PATH_WEB)
         ];
 
-        if (Crud::PAGE_NEW === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyOnForms();
-        } elseif (Crud::PAGE_EDIT === $pageName || Crud::PAGE_DETAIL === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyWhenUpdating();
-            $fields[] = ImageField::new('image')
-                ->setBasePath(BannerItems::PATH_WEB)
-                ->onlyOnDetail();
-        }
-
-        return $fields;
+        return $this->fieldService->configureFields($pageName, BannerItems::PATH_WEB, $fields);
     }
 }

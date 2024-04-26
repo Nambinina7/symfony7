@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Services\FieldService;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -17,7 +18,8 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class UserCrudController extends AbstractCrudController
 {
     public function __construct(
-        private readonly UserPasswordHasherInterface $passwordHasher
+        private readonly UserPasswordHasherInterface $passwordHasher,
+        private readonly FieldService $fieldService
     ) {
     }
 
@@ -53,9 +55,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('position'),
             TextField::new('description'),
             TextField::new('email'),
-            ImageField::new('image')
-                ->setBasePath(User::PATH_USER)
-                ->onlyOnIndex(),
+            $this->fieldService->createImageField('image', User::PATH_USER)
         ];
 
 
@@ -69,18 +69,7 @@ class UserCrudController extends AbstractCrudController
             $fields = array_merge($fields, $additionalFields);
         }
 
-        if (Crud::PAGE_NEW === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyOnForms();
-        } elseif (Crud::PAGE_EDIT === $pageName || Crud::PAGE_DETAIL === $pageName) {
-            $fields[] = TextField::new('imageFile')
-                ->setFormType(VichImageType::class)->onlyWhenUpdating();
-            $fields[] = ImageField::new('image')
-                ->setBasePath(User::PATH_USER)
-                ->onlyOnDetail();
-        }
-
-        return $fields;
+        return $this->fieldService->configureFields($pageName, User::PATH_USER, $fields);
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void

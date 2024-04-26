@@ -2,26 +2,35 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Service;
+use App\Entity\About;
+use App\Entity\Technology;
+use App\Services\FieldService;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 
-class ServiceCrudController extends AbstractCrudController
+class AboutCrudController extends AbstractCrudController
 {
+    public function __construct(private readonly FieldService $fieldService)
+    {
+    }
+
     public static function getEntityFqcn(): string
     {
-        return Service::class;
+        return About::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setPaginatorPageSize(10)
-            ->setEntityLabelInSingular('Services')
-            ->setEntityLabelInPlural('Services');
+            ->setEntityLabelInSingular('About')
+            ->setEntityLabelInPlural('Abouts');
     }
 
     public function configureActions(Actions $actions): Actions
@@ -34,9 +43,9 @@ class ServiceCrudController extends AbstractCrudController
     {
         $fields = [
             TextField::new('title'),
-            TextField::new('subTitle'),
+            TextEditorField::new('description'),
+            $this->fieldService->createImageField('image', About::PATH_ABOUT)
         ];
-
-        return $fields;
+        return $this->fieldService->configureFields($pageName, About::PATH_ABOUT, $fields);
     }
 }
