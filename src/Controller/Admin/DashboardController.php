@@ -6,6 +6,7 @@ use App\Entity\About;
 use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Faq;
+use App\Entity\Section;
 use App\Entity\Service;
 use App\Entity\Technology;
 use App\Entity\User;
@@ -34,12 +35,13 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('About', 'fas fa-building', About::class);
         yield MenuItem::linkToCrud('BannerItems', 'fas fa-list', BannerItems::class);
         yield MenuItem::linkToCrud('Banner', 'fas fa-image', Banner::class);
-        yield MenuItem::linkToCrud('Technologie', 'fas fa-code', Technology::class);
         yield MenuItem::linkToCrud('Faq', 'fas fa-comments', Faq::class);
         yield MenuItem::linkToCrud('Services', 'fas fa-info', Service::class);
-        yield MenuItem::linkToCrud('About', 'fas fa-building', About::class);
+        yield MenuItem::linkToCrud('Section', 'fas fa-section', Section::class);
+        yield MenuItem::linkToCrud('Technologies', 'fas fa-code', Technology::class);
+        yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
     }
 }

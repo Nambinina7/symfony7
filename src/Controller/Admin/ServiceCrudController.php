@@ -20,7 +20,7 @@ class ServiceCrudController extends AbstractCrudController
     {
         return $crud
             ->setPaginatorPageSize(10)
-            ->setEntityLabelInSingular('Services')
+            ->setEntityLabelInSingular('Service')
             ->setEntityLabelInPlural('Services');
     }
 

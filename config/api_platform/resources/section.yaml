@@ -1,0 +1,9 @@
+App\Entity\Section:
+  operations:
+    get_section:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+
+
+  normalizationContext:
+    groups: [ 'section:read' ]
