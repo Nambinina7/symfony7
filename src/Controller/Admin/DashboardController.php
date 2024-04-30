@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\About;
 use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Faq;
@@ -38,6 +39,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Banner', 'fas fa-image', Banner::class);
         yield MenuItem::linkToCrud('Technologie', 'fas fa-code', Technology::class);
         yield MenuItem::linkToCrud('Faq', 'fas fa-comments', Faq::class);
-        yield MenuItem::linkToCrud('Service', 'fas fa-info', Service::class);
+        yield MenuItem::linkToCrud('Services', 'fas fa-info', Service::class);
+        yield MenuItem::linkToCrud('About', 'fas fa-building', About::class);
     }
 }

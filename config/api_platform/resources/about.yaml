@@ -1,0 +1,9 @@
+App\Entity\About:
+  operations:
+    get_about:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+
+
+  normalizationContext:
+    groups: [ 'about:read' ]

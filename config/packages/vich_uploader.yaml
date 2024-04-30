@@ -14,4 +14,8 @@ vich_uploader:
             uri_prefix: '%technology_image_dir_prefix%'
             upload_destination: '%technology_image_dir%'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        about_upload:
+            uri_prefix: '%about_image_dir_prefix%'
+            upload_destination: '%about_image_dir%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
 
