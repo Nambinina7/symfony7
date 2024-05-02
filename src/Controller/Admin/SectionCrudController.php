@@ -32,11 +32,9 @@ class SectionCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $fields = [
+        return [
             TextField::new('title'),
             TextField::new('subTitle'),
         ];
-
-        return $fields;
     }
 }

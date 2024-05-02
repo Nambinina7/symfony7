@@ -16,6 +16,8 @@ class Banner
     use EntityTimestampTrait;
     public const ROUTE_MOBILE = "get_banners_mobile";
 
+    public const ANIMATION = ["fade", "slide"];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]

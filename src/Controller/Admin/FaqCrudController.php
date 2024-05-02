@@ -32,11 +32,9 @@ class FaqCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
-        $fields = [
+        return [
             TextField::new('question'),
             TextField::new('answer'),
         ];
-
-        return $fields;
     }
 }
