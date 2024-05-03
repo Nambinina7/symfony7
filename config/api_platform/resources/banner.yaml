@@ -4,11 +4,13 @@ App\Entity\Banner:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /banners/web
+      security: 'is_granted("ROLE_USER")'
 
     get_banners_mobile:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /banners/mobile
+      security: 'is_granted("ROLE_USER")'
 
   normalizationContext:
     groups: [ 'banner:read' ]

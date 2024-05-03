@@ -10,6 +10,23 @@ security:
                 class: App\Entity\User
                 property: email
     firewalls:
+        #Configuration lexik/jwt-authentication-bundle
+        login:
+            pattern: ^/api/login
+            stateless: true
+            provider: app_user_provider
+            json_login:
+                username_path: email
+                check_path: /api/login_check
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: app_user_provider
+            jwt: ~
+        #Configuration lexik/jwt-authentication-bundle
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -28,6 +45,7 @@ security:
     access_control:
         # - { path: ^/admin, roles: ROLE_ADMIN }
         # - { path: ^/profile, roles: ROLE_USER }
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
