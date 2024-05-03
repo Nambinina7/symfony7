@@ -1,0 +1,10 @@
+App\Entity\Contact:
+  operations:
+    post_contact:
+      class: ApiPlatform\Metadata\Post
+
+
+  denormalizationContext:
+    groups: [ 'contact:create' ]
+
+
