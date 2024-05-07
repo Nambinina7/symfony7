@@ -20,6 +20,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestampTrait;
     public const PATH_USER = "/user/images/";
+
+    public const ROLES = [
+        'ROLE_USER' => 'ROLE_USER',
+        'ROLE_ADMIN' => 'ROLE_ADMIN',
+    ];
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -30,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[SerializedName('src')]
     private ?File $imageFile = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     #[Groups(['user:read'])]
     public ?string $image = null;
 
@@ -45,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = [];
+    private array $roles = ["ROLE_USER"];
 
     /**
      * @var string The hashed password

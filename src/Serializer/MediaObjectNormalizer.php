@@ -30,14 +30,19 @@ class MediaObjectNormalizer implements NormalizerInterface
         if ($object instanceof User) {
             $prefixUser = User::PATH_USER;
             $object->path = $prefixUser . $object->image;
-        } elseif ($object instanceof Technology) {
+        }
+
+        if ($object instanceof Technology) {
             $prefixTechnology = Technology::PATH_TECHNOLOGY;
             $object->path = $prefixTechnology . $object->image;
+        }
 
-        } elseif ($object instanceof About) {
+        if ($object instanceof About) {
             $prefixAbout = About::PATH_ABOUT;
             $object->path = $prefixAbout . $object->image;
-        } else {
+        }
+
+        if ($object instanceof Banner) {
             $isMobileRequest = $request && $request->attributes->get('_route') === Banner::ROUTE_MOBILE;
             $prefix = $isMobileRequest ? BannerItems::PATH_MOBILE : BannerItems::PATH_WEB;
             foreach($object->getBannerItems() as $bannerItem) {

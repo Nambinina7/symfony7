@@ -19,6 +19,11 @@ Launching the Symfony server:
 
     symfony run serve
 
+Install & Build Assets:
+
+    npm install
+    npm run dev
+
 Add fixtures :
 
     php bin/console d:f:l
