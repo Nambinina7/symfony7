@@ -3,7 +3,8 @@ App\Entity\Section:
     get_section:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
-      security: 'is_granted("ROLE_USER")'
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employer can get sections."
 
 
   normalizationContext:

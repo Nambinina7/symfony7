@@ -4,7 +4,8 @@ App\Entity\User:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /users
-      security: 'is_granted("ROLE_USER")'
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employer can get users."
 
 
   normalizationContext:

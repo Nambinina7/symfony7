@@ -137,10 +137,22 @@ class BannerItems
     }
 
     #[ORM\PreRemove]
-    public function removeImageFile(): void
+    public function removeImageBannerWeb(): void
     {
         if ($this->image) {
             $filePathWeb = sprintf('%s/../../public/%s%s', __DIR__, BannerItems::PATH_WEB, $this->image);
+
+            if (file_exists($filePathWeb)) {
+                unlink($filePathWeb);
+            }
+        }
+    }
+
+    #[ORM\PreRemove]
+    public function removeImageBannerMobile(): void
+    {
+        if ($this->image) {
+            $filePathWeb = sprintf('%s/../../public/%s%s', __DIR__, BannerItems::PATH_MOBILE, $this->image);
 
             if (file_exists($filePathWeb)) {
                 unlink($filePathWeb);

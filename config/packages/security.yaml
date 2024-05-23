@@ -24,9 +24,17 @@ security:
         api:
             pattern: ^/api
             stateless: true
+            entry_point: jwt
             provider: app_user_provider
+            json_login:
+                username_path: email
+                check_path: /api/login_check # or, if you have defined a route for your login path, the route name you used
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
             jwt: ~
-        #Configuration lexik/jwt-authentication-bundle
+            refresh_jwt:
+                check_path: /api/token/refresh
+                provider: app_user_provider
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -39,13 +47,14 @@ security:
 
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
-
+    role_hierarchy:
+        ROLE_EMPLOYER: [ ROLE_EMPLOYER ]
+        ROLE_SUPER_ADMIN: [ ROLE_ADMIN ]
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
 
 when@test:
     security:
