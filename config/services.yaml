@@ -27,3 +27,7 @@ services:
     App\EventListener\BannerItemsListener:
         tags:
             - { name: kernel.event_listener, event: vich_uploader.post_upload }
+
+    'App\Doctrine\UserExtension':
+        tags:
+            - { name: api_platform.doctrine.orm.query_extension.collection }

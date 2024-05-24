@@ -15,14 +15,19 @@ Configure database:
 
     php bin/console doctrine:migrations:migrate
 
-Launching the Symfony server:
+Generate the SSL keys:
 
-    symfony run serve
+    php bin/console lexik:jwt:generate-keypair
+
 
 Install & Build Assets:
 
     npm install
     npm run dev
+
+Launching the Symfony server:
+
+    symfony run serve
 
 Add fixtures :
 

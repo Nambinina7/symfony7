@@ -22,7 +22,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public const PATH_USER = "/user/images/";
 
     public const ROLES = [
-        'ROLE_USER' => 'ROLE_USER',
+        'ROLE_EMPLOYER' => 'ROLE_EMPLOYER',
         'ROLE_ADMIN' => 'ROLE_ADMIN',
     ];
     #[ORM\Id]
