@@ -4,6 +4,7 @@ App\Entity\User:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /users
+      security: 'is_granted("ROLE_USER")'
 
 
   normalizationContext:

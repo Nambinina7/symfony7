@@ -13,7 +13,8 @@
 /.svn
 /migrations/
 ###< symfony/framework-bundle ###
-
+/public/build
+/node_modules
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
@@ -44,3 +45,7 @@ public/about/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###

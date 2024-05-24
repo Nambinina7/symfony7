@@ -2,6 +2,7 @@ App\Entity\Contact:
   operations:
     post_contact:
       class: ApiPlatform\Metadata\Post
+      security: 'is_granted("ROLE_USER")'
 
 
   denormalizationContext:
