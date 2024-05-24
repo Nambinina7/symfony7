@@ -3,6 +3,7 @@ App\Entity\Technology:
     get_technology:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
+      security: 'is_granted("ROLE_USER")'
 
 
   normalizationContext:

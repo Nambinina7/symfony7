@@ -2,26 +2,29 @@
 
 namespace App\DataFixtures;
 
-use App\Entity\BannerItems;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
-use Faker;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private readonly UserPasswordHasherInterface $passwordHasher)
+    {
+    }
+
     public function load(ObjectManager $manager): void
     {
-
-        $faker = Faker\Factory::create();
-
-        for ($i = 0; $i < 3; $i++) {
-            $banner = new BannerItems();
-            $banner->setTitle("Title".$i);
-            $banner->setOrderNumber($i + 1);
-            $banner->setDescription("Le Lorem Ipsum est simplement du faux texte employé dans la composition et la mise en page avant impression. Le Lorem Ipsum est le faux texte standard de l'imprimerie depuis les années 1500");
-            $banner->setImage($faker->imageUrl(width: 640, height: 450));
-            $manager->persist($banner);
-        }
+        $user = new User();
+        $user->setLastname("Doe");
+        $user->setFirstname("John");
+        $user->setPosition("admin");
+        $user->setDescription("admin");
+        $user->setEmail("admin@admin.com");
+        $user->setRoles(["ROLE_ADMIN"]);
+        $hashedPassword = $this->passwordHasher->hashPassword($user, "password");
+        $user->setPassword($hashedPassword);
+        $manager->persist($user);
 
         $manager->flush();
     }
