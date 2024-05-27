@@ -42,7 +42,6 @@ class UserCrudController extends AbstractCrudController
 
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
-            ->add(Crud::PAGE_INDEX, $password_user)->setPermission(Action::new('editpassword'), 'ROLE_USER')
         ;
     }
 
