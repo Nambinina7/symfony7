@@ -3,8 +3,8 @@ App\Entity\About:
     get_about:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: "Only employer roles can access the abouts data."
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can access the abouts data."
 
   normalizationContext:
     groups: [ 'about:read' ]

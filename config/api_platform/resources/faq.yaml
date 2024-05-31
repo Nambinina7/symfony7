@@ -3,8 +3,8 @@ App\Entity\Faq:
     get_faq:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: 'Only employer roles can access the fAQs data.'
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: 'Only api user roles can access the fAQs data.'
 
   normalizationContext:
     groups: [ 'faq:read' ]

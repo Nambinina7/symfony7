@@ -2,8 +2,8 @@ App\Entity\Contact:
   operations:
     post_contact:
       class: ApiPlatform\Metadata\Post
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: "Only employer roles can post contacts data."
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can post contacts data."
 
   denormalizationContext:
     groups: [ 'contact:create' ]

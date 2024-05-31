@@ -21,10 +21,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use EntityTimestampTrait;
     public const PATH_USER = "/user/images/";
 
+    public const ROLE_USER = 'ROLE_USER';
+    public const ROLE_EMPLOYER = 'ROLE_EMPLOYER';
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+
     public const ROLES = [
-        'ROLE_EMPLOYER' => 'ROLE_EMPLOYER',
-        'ROLE_ADMIN' => 'ROLE_ADMIN',
+        self::ROLE_EMPLOYER => self::ROLE_EMPLOYER,
+        self::ROLE_ADMIN => self::ROLE_ADMIN,
     ];
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -50,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var list<string> The user roles
      */
     #[ORM\Column]
-    private array $roles = ["ROLE_USER"];
+    private array $roles = [self::ROLE_USER];
 
     /**
      * @var string The hashed password
@@ -109,8 +114,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = self::ROLE_USER;
 
         return array_unique($roles);
     }
