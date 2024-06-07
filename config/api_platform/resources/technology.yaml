@@ -3,8 +3,8 @@ App\Entity\Technology:
     get_technology:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: "Only employer roles can access the technology data."
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can access the technology data."
 
   normalizationContext:
     groups: [ 'technology:read' ]

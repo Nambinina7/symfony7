@@ -9,25 +9,20 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        app_api_user_provider:
+            entity:
+                class: App\Entity\ApiUser
+                property: username
     firewalls:
         #Configuration lexik/jwt-authentication-bundle
-        login:
-            pattern: ^/api/login
-            stateless: true
-            provider: app_user_provider
-            json_login:
-                username_path: email
-                check_path: /api/login_check
-                success_handler: lexik_jwt_authentication.handler.authentication_success
-                failure_handler: lexik_jwt_authentication.handler.authentication_failure
-
         api:
             pattern: ^/api
             stateless: true
             entry_point: jwt
-            provider: app_user_provider
+            provider: app_api_user_provider
+            user_checker: App\Security\UserChecker
             json_login:
-                username_path: email
+                username_path: username
                 check_path: /api/login_check # or, if you have defined a route for your login path, the route name you used
                 success_handler: lexik_jwt_authentication.handler.authentication_success
                 failure_handler: lexik_jwt_authentication.handler.authentication_failure
@@ -59,6 +54,7 @@ security:
             # https://symfony.com/doc/current/security/impersonating_user.html
             # switch_user: true
     role_hierarchy:
+        ROLE_API_USER: [ ROLE_API_USER ]
         ROLE_EMPLOYER: [ ROLE_EMPLOYER ]
         ROLE_SUPER_ADMIN: [ ROLE_ADMIN ]
     # Easy way to control access for large sections of your site

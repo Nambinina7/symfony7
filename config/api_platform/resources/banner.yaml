@@ -4,15 +4,15 @@ App\Entity\Banner:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /banners/web
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: "Only employer roles can access the banners data."
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can access the banners data web."
 
     get_banners_mobile:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /banners/mobile
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: "Only employer can get banners."
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can get banners data mobile."
 
   normalizationContext:
     groups: [ 'banner:read' ]

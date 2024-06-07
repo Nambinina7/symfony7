@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\About;
+use App\Entity\ApiUser;
 use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Contact;
@@ -51,5 +52,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Section', 'fas fa-section', Section::class);
         yield MenuItem::linkToCrud('Technologies', 'fas fa-code', Technology::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('ApiUsers', 'fas fa-user', ApiUser::class);
     }
 }

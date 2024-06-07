@@ -4,8 +4,8 @@ App\Entity\User:
       class: ApiPlatform\Metadata\GetCollection
       method: GET
       uriTemplate: /users
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: "Only employer roles can access the Users data."
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can access the Users data."
 
   normalizationContext:
     groups: [ 'user:read' ]
