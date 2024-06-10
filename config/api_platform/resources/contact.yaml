@@ -4,6 +4,7 @@ App\Entity\Contact:
       class: ApiPlatform\Metadata\Post
       security: 'is_granted("ROLE_API_USER")'
       securityMessage: "Only api user roles can post contacts data."
+      controller: App\Controller\ContactController
 
   denormalizationContext:
     groups: [ 'contact:create' ]
