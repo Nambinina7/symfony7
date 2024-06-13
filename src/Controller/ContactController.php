@@ -23,7 +23,7 @@ class ContactController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
 
-        if (!$this->isCsrfTokenValid('contact_item', $data['token_csrf'])) {
+        if (!$this->isCsrfTokenValid('contact_item', $data['csrf_token'])) {
             return new JsonResponse(['error' => 'Invalid CSRF token'], 400);
         }
 

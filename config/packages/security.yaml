@@ -30,12 +30,6 @@ security:
             refresh_jwt:
                 check_path: /api/token/refresh
                 provider: app_api_user_provider
-        csrf-token:
-            pattern: ^/contact/csrf-token
-            stateless: false
-            entry_point: jwt
-            provider: app_api_user_provider
-            jwt: ~
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
@@ -71,7 +65,6 @@ security:
          - { path: ^/admin, roles: ROLE_ADMIN }
          - { path: ^/api/login, roles: PUBLIC_ACCESS }
          - { path: ^/api/token/refresh, roles: PUBLIC_ACCESS }
-         - { path: ^/contact/csrf-token, roles: ROLE_API_USER }
 
 when@test:
     security:

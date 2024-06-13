@@ -25,7 +25,7 @@ class ContactType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Contact::class,
             'csrf_protection' => true,
-            'csrf_field_name' => 'token_csrf',
+            'csrf_field_name' => 'csrf_token',
             'csrf_token_id'   => 'contact_item',
         ]);
     }
