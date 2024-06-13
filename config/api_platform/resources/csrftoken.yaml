@@ -1,0 +1,11 @@
+App\Entity\CsrfToken:
+  operations:
+    get_csrfToken:
+      class: ApiPlatform\Metadata\GetCollection
+      method: GET
+      security: 'is_granted("ROLE_API_USER")'
+      securityMessage: "Only api user roles can access the csrfToken data."
+      controller: App\Controller\CsrfTokenController
+
+  normalizationContext:
+    groups: [ 'csrfToken:read' ]

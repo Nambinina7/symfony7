@@ -13,7 +13,6 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class ApiUserCrudController extends AbstractCrudController
 {
-
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
     ) {
