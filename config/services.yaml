@@ -31,3 +31,6 @@ services:
     'App\Doctrine\UserExtension':
         tags:
             - { name: api_platform.doctrine.orm.query_extension.collection }
+    App\Controller\AuthEmployerController:
+        arguments:
+            $userProvider: '@security.user.provider.concrete.app_user_provider'
