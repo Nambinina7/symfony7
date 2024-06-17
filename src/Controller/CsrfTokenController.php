@@ -2,22 +2,28 @@
 
 namespace App\Controller;
 
-use App\Entity\CsrfToken as CsrfTokenEntity;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 
 class CsrfTokenController extends AbstractController
 {
     public function __construct(
-        private readonly CsrfTokenManagerInterface $csrfTokenManager
+        private readonly CsrfTokenManagerInterface $csrfTokenManager,
+        private readonly RequestStack $requestStack,
+
     ) {
     }
 
     public function __invoke(): JsonResponse
     {
-        $csrfToken = $this->csrfTokenManager->getToken('contact_item');
+        $request = $this->requestStack->getCurrentRequest();
+
+        $tokenId = $request->query->get('_csrf_token');
+
+        $csrfToken = $this->csrfTokenManager->getToken($tokenId);
 
         return new JsonResponse(['csrf_token' => $csrfToken->getValue()]);
     }
