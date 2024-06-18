@@ -1,0 +1,18 @@
+App\Entity\Permission:
+  operations:
+    ApiPlatform\Metadata\Post:
+      uriTemplate: /employee/permissions
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: 'Only employee roles can post the permission data.'
+      processor: App\State\PermissionStateProcessor
+    get_permission:
+      class: ApiPlatform\Metadata\GetCollection
+      uriTemplate: /employee/permissions
+      method: GET
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employee roles can access the permission data."
+      controller: App\Controller\GetPermissionsByUserAction
+  normalizationContext:
+    groups: [ 'permission:read' ]
+  denormalizationContext:
+    groups: [ 'permission:write' ]

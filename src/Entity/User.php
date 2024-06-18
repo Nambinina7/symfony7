@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Entity\Traits\EntityTimestampTrait;
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
@@ -33,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'permission:read'])]
     private ?int $id = null;
 
     #[Vich\UploadableField(mapping: 'user_upload', fileNameProperty: 'image')]
@@ -48,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public ?string $path = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'permission:read'])]
     private ?string $email = null;
 
     /**
@@ -64,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'permission:read'])]
     private ?string $position = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -72,12 +74,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'permission:read'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read'])]
+    #[Groups(['user:read', 'permission:read'])]
     private ?string $lastName = null;
+
+    #[ORM\OneToMany(targetEntity: Permission::class, mappedBy: 'userPermissions')]
+    private Collection $permissions;
+
+    public function __construct()
+    {
+        $this->permissions = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -236,5 +246,40 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->lastName = ucwords($lastName);
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, Permission>
+     */
+    public function getPermissions(): Collection
+    {
+        return $this->permissions;
+    }
+
+    public function addPermission(Permission $permission): static
+    {
+        if (!$this->permissions->contains($permission)) {
+            $this->permissions->add($permission);
+            $permission->setUserPermissions($this);
+        }
+
+        return $this;
+    }
+
+    public function removePermission(Permission $permission): static
+    {
+        if ($this->permissions->removeElement($permission)) {
+            // set the owning side to null (unless already changed)
+            if ($permission->getUserPermissions() === $this) {
+                $permission->setUserPermissions(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->getFirstName();
     }
 }

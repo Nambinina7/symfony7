@@ -8,6 +8,7 @@ use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Contact;
 use App\Entity\Faq;
+use App\Entity\Permission;
 use App\Entity\Section;
 use App\Entity\Service;
 use App\Entity\Technology;
@@ -53,5 +54,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Technologies', 'fas fa-code', Technology::class);
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('ApiUsers', 'fas fa-user', ApiUser::class);
+        yield MenuItem::linkToCrud('Permissions', 'fas fa-clock', Permission::class);
     }
 }
