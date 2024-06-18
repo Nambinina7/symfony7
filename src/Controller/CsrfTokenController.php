@@ -13,7 +13,6 @@ class CsrfTokenController extends AbstractController
     public function __construct(
         private readonly CsrfTokenManagerInterface $csrfTokenManager,
         private readonly RequestStack $requestStack,
-
     ) {
     }
 
