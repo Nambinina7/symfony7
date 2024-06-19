@@ -11,7 +11,7 @@ Configure database:
 
     php bin/console d:d:c --if-not-exists
 
-    php bin/console make migration:migrate
+    php bin/console make:migration
 
     php bin/console doctrine:migrations:migrate
 

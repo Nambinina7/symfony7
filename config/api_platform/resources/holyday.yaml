@@ -1,0 +1,18 @@
+App\Entity\Holyday:
+  operations:
+    ApiPlatform\Metadata\Post:
+      uriTemplate: /employee/holydays
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: 'Only employee roles can post the holiday data.'
+      processor: App\State\EmployeeEntitiesStateProcessor
+    get_holiday:
+      class: ApiPlatform\Metadata\GetCollection
+      uriTemplate: /employee/holydays
+      method: GET
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employee roles can access the holiday data."
+      controller: App\Controller\HolidayByUserController
+  normalizationContext:
+    groups: [ 'holyday:read' ]
+  denormalizationContext:
+    groups: [ 'holyday:write' ]
