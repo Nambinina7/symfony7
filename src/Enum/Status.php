@@ -2,7 +2,7 @@
 
 namespace App\Enum;
 
-enum PermissionStatus
+enum Status
 {
     public const APPROVED = 'Approuvé';
     public const PENDING = 'En attente';

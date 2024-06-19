@@ -2,7 +2,7 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\Permission;
+use App\Entity\Holyday;
 use App\Enum\Status;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
@@ -12,10 +12,9 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use EasyCorp\Bundle\EasyAdminBundle\Field\TimeField;
 use Symfony\Bundle\SecurityBundle\Security;
 
-class PermissionCrudController extends AbstractCrudController
+class HolydayCrudController extends AbstractCrudController
 {
     private Security $security;
 
@@ -24,26 +23,26 @@ class PermissionCrudController extends AbstractCrudController
         $this->security = $security;
     }
 
-    private function getPermissionStatusChoices(): array
+    private function getHolydayStatusChoices(): array
     {
         $choices = [];
-        foreach(Status::getValues() as $i => $permissionStatus) {
-            $choices[$permissionStatus] = $permissionStatus;
+        foreach(Status::getValues() as $i => $holidayStatus) {
+            $choices[$holidayStatus] = $holidayStatus;
         }
         return $choices;
     }
 
     public static function getEntityFqcn(): string
     {
-        return Permission::class;
+        return Holyday::class;
     }
 
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
             ->setPaginatorPageSize(10)
-            ->setEntityLabelInSingular('Permission')
-            ->setEntityLabelInPlural('Permissions');
+            ->setEntityLabelInSingular('Holiday')
+            ->setEntityLabelInPlural('Holidays');
     }
 
     public function configureActions(Actions $actions): Actions
@@ -55,20 +54,19 @@ class PermissionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
+            DateField::new('requestDate'),
             DateField::new('startDate'),
             DateField::new('endDate'),
-            TimeField::new('beginningHour'),
-            TimeField::new('endTime'),
-            TextField::new('naturePermission'),
-            ChoiceField::new('status')->setChoices(fn () => $this->getPermissionStatusChoices()),
+            TextField::new('leaveReasons'),
+            ChoiceField::new('status')->setChoices(fn () => $this->getHolydayStatusChoices()),
         ];
     }
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if ($entityInstance instanceof Permission) {
+        if ($entityInstance instanceof Holyday) {
             $user = $this->security->getUser();
-            $entityInstance->setUserPermissions($user);
+            $entityInstance->addUserHolyday($user);
         }
 
         parent::persistEntity($entityManager, $entityInstance);

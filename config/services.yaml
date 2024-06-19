@@ -34,6 +34,6 @@ services:
     App\Controller\AuthEmployerController:
         arguments:
             $userProvider: '@security.user.provider.concrete.app_user_provider'
-    App\State\PermissionStateProcessor:
+    App\State\EmployeeEntitiesStateProcessor:
         bind:
             $persistProcessor: '@api_platform.doctrine.orm.state.persist_processor'

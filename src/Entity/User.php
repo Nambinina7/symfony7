@@ -35,7 +35,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
-    #[Groups(['user:read', 'permission:read'])]
+    #[Groups(['user:read', 'permission:read', 'holyday:read'])]
     private ?int $id = null;
 
     #[Vich\UploadableField(mapping: 'user_upload', fileNameProperty: 'image')]
@@ -50,7 +50,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public ?string $path = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    #[Groups(['user:read', 'permission:read'])]
+    #[Groups(['user:read', 'permission:read', 'holyday:read'])]
     private ?string $email = null;
 
     /**
@@ -66,7 +66,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'permission:read'])]
+    #[Groups(['user:read', 'permission:read', 'holyday:read'])]
     private ?string $position = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
@@ -74,19 +74,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $description = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'permission:read'])]
+    #[Groups(['user:read', 'permission:read', 'holyday:read'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
-    #[Groups(['user:read', 'permission:read'])]
+    #[Groups(['user:read', 'permission:read', 'holyday:read'])]
     private ?string $lastName = null;
 
     #[ORM\OneToMany(targetEntity: Permission::class, mappedBy: 'userPermissions')]
     private Collection $permissions;
 
+    #[ORM\ManyToMany(targetEntity: Holyday::class, mappedBy: 'userHolydays')]
+    private Collection $holydays;
+
     public function __construct()
     {
         $this->permissions = new ArrayCollection();
+        $this->holydays = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -281,5 +285,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->getFirstName();
+    }
+
+    /**
+     * @return Collection<int, Holyday>
+     */
+    public function getHolydays(): Collection
+    {
+        return $this->holydays;
+    }
+
+    public function addHolyday(Holyday $holyday): static
+    {
+        if (!$this->holydays->contains($holyday)) {
+            $this->holydays->add($holyday);
+            $holyday->addUserHolyday($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHolyday(Holyday $holyday): static
+    {
+        if ($this->holydays->removeElement($holyday)) {
+            $holyday->removeUserHolyday($this);
+        }
+
+        return $this;
     }
 }

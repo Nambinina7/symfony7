@@ -8,6 +8,7 @@ use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Contact;
 use App\Entity\Faq;
+use App\Entity\Holyday;
 use App\Entity\Permission;
 use App\Entity\Section;
 use App\Entity\Service;
@@ -55,5 +56,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('ApiUsers', 'fas fa-user', ApiUser::class);
         yield MenuItem::linkToCrud('Permissions', 'fas fa-clock', Permission::class);
+        yield MenuItem::linkToCrud('Holiday', 'fas fa-clock', Holyday::class);
     }
 }
