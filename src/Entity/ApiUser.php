@@ -4,10 +4,13 @@ namespace App\Entity;
 
 use App\Repository\ApiUserRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ApiUserRepository::class)]
+#[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
 class ApiUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_API_USER = 'ROLE_API_USER';
@@ -20,9 +23,11 @@ class ApiUser implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 6, max: 20)]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\Length(min: 6, max: 20)]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -39,6 +44,11 @@ class ApiUser implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i",
+        message: 'New password is required to be eight characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&).',
+        htmlPattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+    )]
     private ?string $password = null;
 
     public function getId(): ?int
