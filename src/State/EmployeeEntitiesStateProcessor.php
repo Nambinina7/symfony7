@@ -9,12 +9,17 @@ use App\Entity\Permission;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-readonly class  EmployeeEntitiesStateProcessor implements ProcessorInterface
+class EmployeeEntitiesStateProcessor implements ProcessorInterface
 {
+    private ProcessorInterface $persistProcessor;
+    private TokenStorageInterface $token;
+
     public function __construct(
-        private ProcessorInterface    $persistProcessor,
-        private TokenStorageInterface $token,
+        ProcessorInterface    $persistProcessor,
+        TokenStorageInterface $token,
     ) {
+        $this->persistProcessor = $persistProcessor;
+        $this->token = $token;
     }
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = [])
