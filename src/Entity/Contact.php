@@ -7,6 +7,7 @@ use App\Repository\ContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ContactRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -20,10 +21,12 @@ class Contact
 
     #[ORM\Column(length: 255)]
     #[Groups(['contact:create'])]
+    #[Assert\Length(min: 6, max: 20)]
     private ?string $fullName = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['contact:create'])]
+    #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
     private ?string $email = null;
 
     #[ORM\Column(length: 255, nullable: true)]

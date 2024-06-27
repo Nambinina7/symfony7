@@ -8,16 +8,19 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\SerializedName;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     use EntityTimestampTrait;
@@ -51,6 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 180, unique: true)]
     #[Groups(['user:read', 'permission:read', 'holyday:read'])]
+    #[Assert\Email(message: "The email '{{ value }}' is not a valid email.")]
     private ?string $email = null;
 
     /**
@@ -63,6 +67,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
+    #[Assert\Regex(
+        pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i",
+        message: 'New password is required to be eight characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&).',
+        htmlPattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
+    )]
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -75,10 +84,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'permission:read', 'holyday:read'])]
+    #[Assert\Length(min: 6, max: 25)]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'permission:read', 'holyday:read'])]
+    #[Assert\Length(min: 6, max: 25)]
     private ?string $lastName = null;
 
     #[ORM\OneToMany(targetEntity: Permission::class, mappedBy: 'userPermissions')]
