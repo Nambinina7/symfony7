@@ -15,6 +15,8 @@ services:
         bind:
             string $permissionSheetId: '%env(GOOGLE_SHEET_PERMISSION_ID)%'
             string $holydaySheetId: '%env(GOOGLE_SHEET_HOLYDAY_ID)%'
+            string $default_email: '%env(DEFAULT_EMAIL)%'
+            string $app_url_front: '%env(APP_URL_FRONT)%'
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
@@ -43,3 +45,10 @@ services:
     App\EventSubscriber\EmployeeEntitiesSubscriber:
         tags:
             - { name: 'kernel.event_subscriber' }
+    Symfony\Component\Mailer\Mailer:
+        alias: 'mailer'
+        public: true*
+    App\Services\JWTService:
+        arguments:
+            $secretKey: '%env(APP_SECRET)%'
+            $appUrl: '%env(APP_URL)%'

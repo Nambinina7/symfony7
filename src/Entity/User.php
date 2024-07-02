@@ -26,6 +26,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use EntityTimestampTrait;
     public const PATH_USER = "/user/images/";
 
+    public const HTML_CONTENT_MESSAGE = "Click on the link to change your password";
+
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_EMPLOYER = 'ROLE_EMPLOYER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
@@ -72,6 +74,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         message: 'New password is required to be eight characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&).',
         htmlPattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
     )]
+
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
@@ -97,6 +100,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Holyday::class, mappedBy: 'userHolydays')]
     private Collection $holydays;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $lastChangeRequest = null;
 
     public function __construct()
     {
@@ -324,4 +330,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    public function getLastChangeRequest(): ?\DateTimeInterface
+    {
+        return $this->lastChangeRequest;
+    }
+
+    #[ORM\PrePersist]
+    public function setLastChangeRequest(): void
+    {
+        $this->lastChangeRequest = (new \DateTime())->modify('+2 hours');
+    }
+
 }

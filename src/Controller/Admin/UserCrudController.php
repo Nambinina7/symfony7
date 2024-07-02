@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Services\JWTService;
 use App\Services\FieldService;
+use App\Services\MailerServices;
 use Doctrine\ORM\EntityManagerInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
@@ -18,7 +20,10 @@ class UserCrudController extends AbstractCrudController
 {
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly FieldService $fieldService
+        private readonly FieldService $fieldService,
+        private readonly MailerServices $mailerServices,
+        private readonly JWTService $jwtService,
+        private readonly string $app_url_front,
     ) {
     }
 
@@ -37,9 +42,6 @@ class UserCrudController extends AbstractCrudController
 
     public function configureActions(Actions $actions): Actions
     {
-        $password_user = Action::new('editpassword', 'Edit password')
-            ->linkToRoute('new_user_password', fn (User $user) => ['id' => $user->getId()]);
-
         return $actions
             ->add(Crud::PAGE_INDEX, Action::DETAIL)
         ;
@@ -78,6 +80,22 @@ class UserCrudController extends AbstractCrudController
     {
         if ($entityInstance->getPassword()) {
             $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $entityInstance->getPassword()));
+        }
+
+        if (in_array("ROLE_EMPLOYER", $entityInstance->getRoles())) {
+            $token = $this->jwtService->createToken($entityInstance);
+
+            $resetUrl = "{$this->app_url_front}/change-password?token={$token->toString()}";
+
+            $message = User::HTML_CONTENT_MESSAGE;
+
+            $htmlContent = "<p> $message : <a href=\"$resetUrl\">$resetUrl</a></p>";
+
+            $this->mailerServices->sendEmail(
+                $entityInstance->getEmail(),
+                'Change password',
+                $htmlContent
+            );
         }
 
         $entityManager->persist($entityInstance);
