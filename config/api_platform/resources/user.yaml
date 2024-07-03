@@ -6,12 +6,14 @@ App\Entity\User:
       uriTemplate: /users
       security: 'is_granted("ROLE_API_USER")'
       securityMessage: "Only api user roles can access the Users data."
-    post_update_user:
+    update_password_user:
       class: ApiPlatform\Metadata\Post
       uriTemplate: /employee/update/password
-      security: 'is_granted("ROLE_EMPLOYER")'
-      securityMessage: 'Only employee roles can post the user data.'
-      controller: App\Controller\UserUpdateController
+      controller: App\Controller\UpdatePasswordController
+    forgot_password_user:
+      class: ApiPlatform\Metadata\Post
+      uriTemplate: /employee/forgot/password
+      controller: App\Controller\ForgotPasswordController
 
   normalizationContext:
     groups: [ 'user:read' ]

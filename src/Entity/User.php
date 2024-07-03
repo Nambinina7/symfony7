@@ -108,6 +108,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->permissions = new ArrayCollection();
         $this->holydays = new ArrayCollection();
+        $this->lastChangeRequest = (new \DateTime())->modify('+2 hours');
     }
 
     public function getId(): ?int
@@ -335,11 +336,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->lastChangeRequest;
     }
-
-    #[ORM\PrePersist]
-    public function setLastChangeRequest(): void
+    public function setLastChangeRequest(?\DateTimeInterface $lastChangeRequest): self
     {
-        $this->lastChangeRequest = (new \DateTime())->modify('+2 hours');
-    }
+        $this->lastChangeRequest = $lastChangeRequest;
 
+        return $this;
+    }
 }

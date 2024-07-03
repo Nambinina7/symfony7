@@ -1,16 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace App\Services;
 
 use App\Repository\UserRepository;
-use App\Services\JWTService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-class UserUpdateController extends AbstractController
+class PasswordService
 {
     public function __construct(
         private readonly JWTService $jwtService,
@@ -20,12 +17,8 @@ class UserUpdateController extends AbstractController
     ) {
     }
 
-    public function __invoke(Request $request): JsonResponse
+    public function updatePassword(string $token, string $newPassword): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $token = $data['token_update_password'] ?? null;
-        $newPassword = $data['newPassword'] ?? null;
-
         if (!$token || !$newPassword) {
             return new JsonResponse(['error' => 'Token and new password are required'], 400);
         }
@@ -55,5 +48,14 @@ class UserUpdateController extends AbstractController
         $this->entityManager->flush();
 
         return new JsonResponse(['message' => 'Password updated successfully'], 200);
+    }
+
+    public function confirmPassword(string $token, string $password, string $confirmPassword): JsonResponse
+    {
+        if ($password !== $confirmPassword) {
+            return new JsonResponse(['error' => 'Passwords do not match'], 400);
+        }
+
+        return $this->updatePassword($token, $password);
     }
 }
