@@ -26,8 +26,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     use EntityTimestampTrait;
     public const PATH_USER = "/user/images/";
 
-    public const HTML_CONTENT_MESSAGE = "Click on the link to change your password";
-
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_EMPLOYER = 'ROLE_EMPLOYER';
     public const ROLE_ADMIN = 'ROLE_ADMIN';

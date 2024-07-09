@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Mail;
 use App\Entity\User;
+use App\Repository\MailRepository;
 use App\Repository\UserRepository;
 use App\Services\JWTService;
 use App\Services\MailerServices;
@@ -20,6 +22,7 @@ class SendEmailForgotController extends AbstractController
         private readonly MailerServices $mailerServices,
         private readonly string $app_url_front,
         private readonly EntityManagerInterface $entityManager,
+        private readonly MailRepository $mailRepository,
     ) {
     }
     #[Route('/api/employee/send/email', name: 'send_email', methods: ['POST'])]
@@ -44,17 +47,11 @@ class SendEmailForgotController extends AbstractController
 
         $token = $this->jwtService->createToken($user);
 
-        $resetUrl = "{$this->app_url_front}/forgot-password?token={$token->toString()}";
+        $resetUrl = "{$this->app_url_front}/reset-forgot-password?token={$token->toString()}";
 
-        $message = User::HTML_CONTENT_MESSAGE;
+        $mail = new Mail();
 
-        $htmlContent = "<p> $message : <a href=\"$resetUrl\">$resetUrl</a></p>";
-
-        $this->mailerServices->sendEmail(
-            $user->getEmail(),
-            'Change password',
-            $htmlContent
-        );
+        $mail->sendResetPasswordEmail($this->mailRepository, $this->mailerServices, $user, $resetUrl, Mail::FORGOT_PASSWORD_RESET_LINK);
 
         return new JsonResponse(['message' => 'Email sent successfully'], 200);
     }
