@@ -2,7 +2,9 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Mail;
 use App\Entity\User;
+use App\Repository\MailRepository;
 use App\Services\JWTService;
 use App\Services\FieldService;
 use App\Services\MailerServices;
@@ -24,6 +26,7 @@ class UserCrudController extends AbstractCrudController
         private readonly JWTService $jwtService,
         private readonly string $app_url_front,
         private readonly string $default_password_user,
+        private readonly MailRepository $mailRepository,
     ) {
     }
 
@@ -83,15 +86,9 @@ class UserCrudController extends AbstractCrudController
 
             $resetUrl = "{$this->app_url_front}/change-password?token={$token->toString()}";
 
-            $message = User::HTML_CONTENT_MESSAGE;
+            $mail = new Mail();
 
-            $htmlContent = "<p> $message : <a href=\"$resetUrl\">$resetUrl</a></p>";
-
-            $this->mailerServices->sendEmail(
-                $entityInstance->getEmail(),
-                'Change password',
-                $htmlContent
-            );
+            $mail->sendResetPasswordEmail($this->mailRepository, $this->mailerServices, $entityInstance, $resetUrl, Mail::SEND_PASSWORD_RESET_LINK);
         }
 
         $entityManager->persist($entityInstance);
