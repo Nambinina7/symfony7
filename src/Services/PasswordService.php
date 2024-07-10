@@ -56,6 +56,24 @@ class PasswordService
             return new JsonResponse(['error' => 'Passwords do not match'], 400);
         }
 
+        $passwordValidation = $this->validatePassword($password);
+        if ($passwordValidation !== true) {
+            return new JsonResponse(['error' => $passwordValidation], 422);
+        }
+
         return $this->updatePassword($token, $password);
+    }
+
+    public function validatePassword(string $password): bool|string
+    {
+        if (!preg_match('/[!@#$%^&*(),.?":{}|<>]/', $password)) {
+            return 'Password must contain at least one special character.';
+        }
+
+        if (!preg_match('/[0-9]/', $password)) {
+            return 'Password must contain at least one number.';
+        }
+
+        return true;
     }
 }
