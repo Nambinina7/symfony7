@@ -69,13 +69,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var string The hashed password
      */
     #[ORM\Column]
-    #[Assert\Regex(
-        pattern: "/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/i",
-        message: 'New password is required to be eight characters, at least one uppercase letter, one lowercase letter, one number and one special character (@$!%*?&).',
-        htmlPattern: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$"
-    )]
-
-    private ?string $password = null;
+    private ?string $password = '';
 
     #[ORM\Column(length: 255)]
     #[Groups(['user:read', 'permission:read', 'holyday:read'])]
@@ -109,6 +103,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->permissions = new ArrayCollection();
         $this->holydays = new ArrayCollection();
         $this->lastChangeRequest = (new \DateTime())->modify('+2 hours');
+        $this->password = '';
     }
 
     public function getId(): ?int
@@ -166,7 +161,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getPassword(): string
     {
-        return $this->password;
+        return $this->password ?? '';
     }
 
     public function setPassword(string $password): static
