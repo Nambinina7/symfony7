@@ -13,7 +13,6 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class UserCrudController extends AbstractCrudController
@@ -24,6 +23,7 @@ class UserCrudController extends AbstractCrudController
         private readonly MailerServices $mailerServices,
         private readonly JWTService $jwtService,
         private readonly string $app_url_front,
+        private readonly string $default_password_user,
     ) {
     }
 
@@ -61,10 +61,6 @@ class UserCrudController extends AbstractCrudController
 
         if (Crud::PAGE_NEW === $pageName) {
             $additionalFields = [
-                TextField::new('password')
-                    ->setRequired(true)
-                    ->hideOnIndex()
-                    ->setFormType(PasswordType::class),
                 ChoiceField::new('roles')
                     ->setChoices(array_flip(User::ROLES))
                     ->allowMultipleChoices()
@@ -78,8 +74,8 @@ class UserCrudController extends AbstractCrudController
 
     public function persistEntity(EntityManagerInterface $entityManager, $entityInstance): void
     {
-        if ($entityInstance->getPassword()) {
-            $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $entityInstance->getPassword()));
+        if ($entityInstance->getPassword() || $entityInstance->getPassword() === '') {
+            $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $this->default_password_user));
         }
 
         if (in_array("ROLE_EMPLOYER", $entityInstance->getRoles())) {
