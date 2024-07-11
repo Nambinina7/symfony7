@@ -3,13 +3,30 @@
 namespace App\Controller;
 
 use ApiPlatform\Symfony\Security\Exception\AccessDeniedException;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class HolidayByUserController extends AbstractController
 {
-    public function __invoke(EntityManagerInterface $entityManager): JsonResponse
+    public function getHolidays(): JsonResponse
+    {
+        $currentUser = $this->getUserOrThrow();
+
+        $holidays = $currentUser->getHolydays();
+        return $this->json($holidays, 200, [], ['groups' => ['holyday:read']]);
+    }
+
+    public function countHolidays(): JsonResponse
+    {
+        $currentUser = $this->getUserOrThrow();
+
+        $holidays = $currentUser->getHolydays();
+        $totalDays = $this->calculateTotalHolidayDays($holidays);
+
+        return $this->json(['total_days' => $totalDays], 200);
+    }
+
+    private function getUserOrThrow()
     {
         $currentUser = $this->getUser();
 
@@ -17,8 +34,20 @@ class HolidayByUserController extends AbstractController
             throw new AccessDeniedException('You must be logged in to access this resource.');
         }
 
-        $holidays = $currentUser->getHolydays();
+        return $currentUser;
+    }
 
-        return $this->json($holidays, 200, [], ['groups' => ['holyday:read']]);
+    private function calculateTotalHolidayDays($holidays): int
+    {
+        $totalDays = 0;
+
+        foreach ($holidays as $holiday) {
+            $startDate = $holiday->getStartDate();
+            $endDate = $holiday->getEndDate();
+            $difference = $endDate->diff($startDate)->days;
+            $totalDays += $difference;
+        }
+
+        return $totalDays;
     }
 }

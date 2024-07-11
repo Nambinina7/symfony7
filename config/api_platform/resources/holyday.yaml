@@ -11,7 +11,14 @@ App\Entity\Holyday:
       method: GET
       security: 'is_granted("ROLE_EMPLOYER")'
       securityMessage: "Only employee roles can access the holiday data."
-      controller: App\Controller\HolidayByUserController
+      controller: App\Controller\HolidayByUserController::getHolidays
+    count_holiday:
+      class: ApiPlatform\Metadata\GetCollection
+      uriTemplate: /employee/holydays/total
+      method: GET
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employee roles can access the holiday data."
+      controller: App\Controller\HolidayByUserController::countHolidays
   normalizationContext:
     groups: [ 'holyday:read' ]
   denormalizationContext:
