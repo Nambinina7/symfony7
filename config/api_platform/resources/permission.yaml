@@ -11,7 +11,14 @@ App\Entity\Permission:
       method: GET
       security: 'is_granted("ROLE_EMPLOYER")'
       securityMessage: "Only employee roles can access the permission data."
-      controller: App\Controller\GetPermissionsByUserController
+      controller: App\Controller\GetPermissionsByUserController::getPermissions
+    count_permission:
+      class: ApiPlatform\Metadata\GetCollection
+      uriTemplate: /employee/permissions/total
+      method: GET
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employee roles can access the permission data."
+      controller: App\Controller\GetPermissionsByUserController::countPermissions
   normalizationContext:
     groups: [ 'permission:read' ]
   denormalizationContext:
