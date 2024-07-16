@@ -11,7 +11,7 @@
 /vendor/
 /.idea
 /.svn
-/migrations/
+#/migrations/
 ###< symfony/framework-bundle ###
 /public/build
 /node_modules

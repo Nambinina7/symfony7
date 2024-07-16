@@ -29,9 +29,9 @@ Launching the Symfony server:
 
     symfony run serve
 
-Add fixtures :
+Add User admin and email data :
 
-    php bin/console d:f:l
+    php bin/console doctrine:migrations:execute --up 'DoctrineMigrations\Version20240716072051'
 
 Use php-cs :
 
