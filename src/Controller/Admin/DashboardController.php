@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\About;
 use App\Entity\ApiUser;
+use App\Entity\BankHolidays;
 use App\Entity\Banner;
 use App\Entity\BannerItems;
 use App\Entity\Contact;
@@ -57,7 +58,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('ApiUsers', 'fas fa-user', ApiUser::class);
         yield MenuItem::linkToCrud('Permissions', 'fas fa-clock', Permission::class);
-        yield MenuItem::linkToCrud('Holiday', 'fas fa-clock', Holyday::class);
+        yield MenuItem::linkToCrud('Holiday', 'fas fa-calendar', Holyday::class);
         yield MenuItem::linkToCrud('Mail', 'fas fa-envelope', Mail::class);
+        yield MenuItem::linkToCrud('Bank holidays', 'fas fa-calendar', BankHolidays::class);
     }
 }
