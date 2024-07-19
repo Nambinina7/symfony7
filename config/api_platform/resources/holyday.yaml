@@ -19,6 +19,13 @@ App\Entity\Holyday:
       security: 'is_granted("ROLE_EMPLOYER")'
       securityMessage: "Only employee roles can access the holiday data."
       controller: App\Controller\HolidayByUserController::countHolidays
+    calculate_holiday:
+      class: ApiPlatform\Metadata\Post
+      uriTemplate: /employee/holydays/calculate
+      method: POST
+      security: 'is_granted("ROLE_EMPLOYER")'
+      securityMessage: "Only employee roles can access the holiday data."
+      controller: App\Controller\LeaveController::calculateLeaveDays
   normalizationContext:
     groups: [ 'holyday:read' ]
   denormalizationContext:

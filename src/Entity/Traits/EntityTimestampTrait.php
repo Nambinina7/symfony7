@@ -16,7 +16,7 @@ trait EntityTimestampTrait
         'contact:create', 'permission:read',
         'permission:read', 'holyday:read',
         'holyday:write'])]
-    private ?\DateTime $createdAt = null;
+    private ?\DateTimeImmutable $createdAt = null;
 
 
     #[ORM\Column(nullable: true)]
@@ -27,19 +27,19 @@ trait EntityTimestampTrait
         'contact:create', 'permission:read',
         'permission:read', 'holyday:read',
         'holyday:write'])]
-    private ?\DateTime $updatedAt = null;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\PrePersist]
     public function setCreateAt(): void
     {
-        $this->createdAt = new \DateTime();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     #[ORM\PrePersist]
     #[ORM\PreUpdate]
     public function setUpdatedAt(): void
     {
-        $this->updatedAt = new \DateTime();
+        $this->updatedAt = new \DateTimeImmutable();
     }
 
     public function getCreatedAt(): DateTimeInterface

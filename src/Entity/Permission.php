@@ -19,16 +19,16 @@ class Permission
     #[Groups(['permission:read'])]
     private ?int $id = null;
     #[Groups(['permission:read', 'permission:write'])]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeInterface $startDate = null;
     #[Groups(['permission:write', 'permission:write'])]
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     private ?\DateTimeInterface $endDate = null;
     #[Groups(['permission:read', 'permission:write'])]
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeInterface $beginningHour = null;
     #[Groups(['permission:read', 'permission:write'])]
-    #[ORM\Column(type: Types::TIME_MUTABLE)]
+    #[ORM\Column(type: Types::TIME_IMMUTABLE)]
     private ?\DateTimeInterface $endTime = null;
     #[Groups(['permission:read', 'permission:write'])]
     #[ORM\Column(length: 255)]

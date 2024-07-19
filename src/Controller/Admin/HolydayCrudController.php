@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ChoiceField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use Symfony\Bundle\SecurityBundle\Security;
 
@@ -54,7 +55,7 @@ class HolydayCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            DateField::new('requestDate'),
+            DateTimeField::new('requestDate'),
             DateField::new('startDate'),
             DateField::new('endDate'),
             TextField::new('leaveReasons'),
