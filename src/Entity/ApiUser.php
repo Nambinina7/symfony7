@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Traits\EntityTimestampTrait;
 use App\Repository\ApiUserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -11,11 +12,14 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ApiUserRepository::class)]
 #[UniqueEntity(fields: ['username'], message: 'There is already an account with this username')]
+#[ORM\HasLifecycleCallbacks]
 class ApiUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
     public const ROLE_API_USER = 'ROLE_API_USER';
 
     public const AUTHENTICATION_EXCEPTION_MESSAGE = "Connexion refusée : rôle non autorisé.";
+
+    use EntityTimestampTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]

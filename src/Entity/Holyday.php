@@ -21,15 +21,15 @@ class Holyday
     #[Groups(['holyday:read'])]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_IMMUTABLE)]
     #[Groups(['holyday:read', 'holyday:write'])]
     private ?\DateTimeInterface $requestDate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Groups(['holyday:read', 'holyday:write'])]
     private ?\DateTimeInterface $startDate = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Groups(['holyday:read', 'holyday:write'])]
     private ?\DateTimeInterface $endDate = null;
 
@@ -44,6 +44,9 @@ class Holyday
     #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'holydays')]
     #[Groups(['holyday:read'])]
     private Collection $userHolydays;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $total = null;
 
     public function __construct()
     {
@@ -135,6 +138,18 @@ class Holyday
     public function removeUserHolyday(User $userHolyday): static
     {
         $this->userHolydays->removeElement($userHolyday);
+
+        return $this;
+    }
+
+    public function getTotal(): ?int
+    {
+        return $this->total;
+    }
+
+    public function setTotal(?int $total): static
+    {
+        $this->total = $total;
 
         return $this;
     }

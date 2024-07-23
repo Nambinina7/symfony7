@@ -15,4 +15,17 @@ class BankHolidaysRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, BankHolidays::class);
     }
+
+    public function countBankHolidaysBetweenDates(\DateTimeImmutable $startDate, \DateTimeImmutable $endDate): int
+    {
+        $qb = $this->createQueryBuilder('h')
+            ->select('COUNT(h.id)')
+            ->where('h.date >= :startDate')
+            ->andWhere('h.date <= :endDate')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->getQuery();
+
+        return (int) $qb->getSingleScalarResult();
+    }
 }

@@ -42,10 +42,7 @@ class HolidayByUserController extends AbstractController
         $totalDays = 0;
 
         foreach ($holidays as $holiday) {
-            $startDate = $holiday->getStartDate();
-            $endDate = $holiday->getEndDate();
-            $difference = $endDate->diff($startDate)->days;
-            $totalDays += $difference;
+            $totalDays += $holiday->getTotal();
         }
 
         return $totalDays;
