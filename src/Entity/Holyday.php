@@ -46,6 +46,7 @@ class Holyday
     private Collection $userHolydays;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['holyday:read', 'holyday:write'])]
     private ?int $total = null;
 
     public function __construct()

@@ -15,11 +15,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class ApiUser implements UserInterface, PasswordAuthenticatedUserInterface
 {
+    use EntityTimestampTrait;
     public const ROLE_API_USER = 'ROLE_API_USER';
 
     public const AUTHENTICATION_EXCEPTION_MESSAGE = "Connexion refusée : rôle non autorisé.";
-
-    use EntityTimestampTrait;
 
     #[ORM\Id]
     #[ORM\GeneratedValue]
