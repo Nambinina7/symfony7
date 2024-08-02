@@ -81,7 +81,7 @@ class UserCrudController extends AbstractCrudController
             $entityInstance->setPassword($this->passwordHasher->hashPassword($entityInstance, $this->default_password_user));
         }
 
-        if (in_array("ROLE_EMPLOYER", $entityInstance->getRoles())) {
+        if (in_array("ROLE_EMPLOYER", $entityInstance->getRoles()) || in_array("ROLE_RH", $entityInstance->getRoles())) {
             $token = $this->jwtService->createToken($entityInstance);
 
             $resetUrl = "{$this->app_url_front}/change-password?token={$token->toString()}";
