@@ -7,13 +7,11 @@ services:
       args:
         user: www
         uid: 1000
-    container_name: alen-app
+    container_name: mokolos-php8
     restart: unless-stopped
     working_dir: /var/www
     volumes:
       - ./:/var/www:delegated
-    environment:
-      APP_ENV: dev
     networks:
       - dev
 
@@ -41,7 +39,7 @@ services:
 
   nginx:
     image: nginx:alpine
-    container_name: alen-nginx
+    container_name: mokolos-nginx
     restart: unless-stopped
     ports:
       - "8000:80"
@@ -54,8 +52,8 @@ services:
       - dev
 
   node:
-    image: node:18
-    container_name: alen-node
+    image: node:20
+    container_name: mokolos-node20
     restart: unless-stopped
     volumes:
       - ./:/var/www
