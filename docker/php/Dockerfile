@@ -32,4 +32,8 @@ RUN mkdir -p /home/$user/.composer && \
 # Set working directory
 WORKDIR /var/www
 
+# Copy custom PHP-FPM configuration
+COPY docker/php/pool.d/www.conf /etc/php/8.2/fpm/pool.d/www.conf
+
+# Set the user to run the container
 USER $user
