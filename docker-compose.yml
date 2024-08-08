@@ -1,61 +1,69 @@
-version: "3.7"
+version: "3.8"
 services:
-  app:
+  php:
     build:
+      context: .
+      dockerfile: docker/php/Dockerfile
       args:
         user: www
         uid: 1000
-      context: ./
-      dockerfile: Dockerfile
-    container_name: alen-app
+    container_name: mokolos-php8
     restart: unless-stopped
-    working_dir: /var/www/
+    working_dir: /var/www
     volumes:
-      - ./:/var/www
-      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./:/var/www:delegated
     networks:
-      - app-network
+      - dev
 
   db:
-    image: mariadb:latest
-    container_name: alen-db
-    restart: unless-stopped
+    image: mysql:9.0.1
     ports:
-      - "3307:3306"
+      - "3306:3306"
     environment:
-      MYSQL_DATABASE: ${DB_DATABASE}
-      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
-      MYSQL_USER: ${DB_USERNAME}
-      SERVICE_TAGS: dev
-      SERVICE_NAME: mysql
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app
     volumes:
-      - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-      - ./docker/mysql/docker-entrypoint-initdb.d/:/docker-entrypoint-initdb.d/
+      - ./var:/var/lib/mysql
+      - ./docker/web/config.conf:/etc/nginx/conf.d/default.conf
     networks:
-      - app-network
+      - dev
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: db
+    networks:
+      - dev
 
   nginx:
     image: nginx:alpine
-    container_name: alen-nginx
+    container_name: mokolos-nginx
     restart: unless-stopped
     ports:
-      - 8001:80
+      - "8000:80"
     volumes:
-      - ./:/var/www
-      - ./docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - ./:/var/www:delegated
+      - ./docker/web/default.conf:/etc/nginx/conf.d/default.conf
+    links:
+      - php
     networks:
-      - app-network
+      - dev
 
   node:
-    image: node:18
-    container_name: alen-node
+    image: node:20
+    container_name: mokolos-node20
+    restart: unless-stopped
     volumes:
       - ./:/var/www
     ports:
-        - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+      - '5173:5173'
     working_dir: /var/www
+    command: sh -c "tail -f /dev/null"
+    networks:
+      - dev
 
 networks:
-  app-network:
+  dev:
     driver: bridge
