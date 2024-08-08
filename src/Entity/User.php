@@ -28,10 +28,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public const ROLE_USER = 'ROLE_USER';
     public const ROLE_EMPLOYER = 'ROLE_EMPLOYER';
+    public const ROLE_RH = 'ROLE_RH';
     public const ROLE_ADMIN = 'ROLE_ADMIN';
 
     public const ROLES = [
         self::ROLE_EMPLOYER => self::ROLE_EMPLOYER,
+        self::ROLE_RH => self::ROLE_RH,
         self::ROLE_ADMIN => self::ROLE_ADMIN,
     ];
 

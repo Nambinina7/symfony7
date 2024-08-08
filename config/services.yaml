@@ -53,3 +53,7 @@ services:
         arguments:
             $secretKey: '%env(APP_SECRET)%'
             $appUrl: '%env(APP_URL)%'
+    App\Security\AuthenticationSuccessHandler:
+        arguments:
+            $httpUtils: '@security.http_utils'
+            $jwtManager: '@lexik_jwt_authentication.jwt_manager'
